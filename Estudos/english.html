@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roteiro Mestre de Inglês</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- 
+    Chosen Palette: Cool Slate & Blue
+    Application Structure Plan: Uma SPA com 5 seções principais navegáveis: "Filosofia" (Fase 0, default), "O Roteiro" (Fases 1-5, com um "stepper" interativo), "Desafios" (foco nos pontos difíceis como Fonética, Do/Does, Present Perfect), "Recursos" (uma biblioteca filtrável de todos os links), e "Seu Plano" (resumo diário e certificados). Esta estrutura orientada a tarefas é superior a um documento linear, pois permite que o aprendiz em qualquer estágio encontre exatamente o que precisa (motivação, o que estudar agora, um ponto gramatical, um recurso) sem rolar por conteúdo irrelevante.
+    Visualization & Content Choices: 
+    1. Info: Fases 1-5 -> Goal: Mostrar progressão e permitir foco em uma fase -> Viz: Stepper horizontal (HTML/CSS) -> Interaction: Clicar em um passo (ex: "Fase 2") usa JS para mostrar o conteúdo detalhado apenas daquela fase. -> Justification: Quebra o conteúdo massivo em pedaços gerenciáveis. (HTML/CSS/JS).
+    2. Info: Metas de Vocabulário (300, 1000, 2500, 5000+) -> Goal: Visualizar o crescimento do vocabulário -> Viz: Gráfico de Barras -> Interaction: Hover para tooltip -> Justification: Fornece uma âncora visual clara para as metas. (Chart.js / Canvas).
+    3. Info: Lista longa de Recursos (apps, podcasts, links) -> Goal: Encontrar um tipo específico de recurso -> Viz: Grade de "Cards" (HTML/Tailwind) com 'data-type' -> Interaction: Botões de filtro (App, YouTube, Podcast, etc.) que usam JS para mostrar/esconder cards. -> Justification: Transforma uma lista estática longa em uma biblioteca interativa e filtrável, a maior melhoria de usabilidade. (HTML/CSS/JS).
+    4. Info: "Grandes Muralhas" (Fonética, Do/Does, Present Perfect) -> Goal: Isolar e focar nos conceitos mais difíceis -> Viz: Cards de conteúdo focado em uma seção dedicada. -> Interaction: Estático, mas organizado para clareza. -> Justification: Extrai os pontos de maior atrito do texto denso para fácil revisão. (HTML/CSS).
+    CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
+    -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9; /* slate-100 */
+            color: #0f172a; /* slate-900 */
+        }
+        .nav-btn.active {
+            border-bottom-color: #2563eb; /* blue-600 */
+            color: #2563eb; /* blue-600 */
+            font-weight: 600;
+        }
+        .phase-step.active {
+            background-color: #2563eb; /* blue-600 */
+            color: white;
+            border-color: #2563eb; /* blue-600 */
+        }
+        .filter-btn.active {
+            background-color: #2563eb; /* blue-600 */
+            color: white;
+            border-color: #2563eb; /* blue-600 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-2xl md:text-3xl font-bold text-blue-700">Roteiro Mestre de Inglês</h1>
+        </div>
+        <nav id="main-nav" class="bg-white border-b-2 border-slate-200">
+            <ul class="container mx-auto px-4 flex space-x-4 md:space-x-8 overflow-x-auto">
+                <li><button class="nav-btn py-3 px-1 md:px-2 border-b-4 border-transparent text-slate-600 hover:text-blue-600 whitespace-nowrap active" data-target="section-filosofia">Filosofia</button></li>
+                <li><button class="nav-btn py-3 px-1 md:px-2 border-b-4 border-transparent text-slate-600 hover:text-blue-600 whitespace-nowrap" data-target="section-roteiro">O Roteiro (Fases)</button></li>
+                <li><button class="nav-btn py-3 px-1 md:px-2 border-b-4 border-transparent text-slate-600 hover:text-blue-600 whitespace-nowrap" data-target="section-desafios">Desafios</button></li>
+                <li><button class="nav-btn py-3 px-1 md:px-2 border-b-4 border-transparent text-slate-600 hover:text-blue-600 whitespace-nowrap" data-target="section-recursos">Recursos</button></li>
+                <li><button class="nav-btn py-3 px-1 md:px-2 border-b-4 border-transparent text-slate-600 hover:text-blue-600 whitespace-nowrap" data-target="section-plano">Seu Plano</button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <!-- ===== SEÇÃO 1: FILOSOFIA (Default) ===== -->
+        <section id="section-filosofia" class="main-section">
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-bold text-blue-700 mb-4">FASE 0: A PREPARAÇÃO (A Filosofia do Inglês)</h2>
+                <p class="mb-6 text-slate-700">Antes de abrir o primeiro livro, você precisa preparar sua mente. Para o inglês, a disciplina mental é ainda mais crucial. Esta é a sua base: seu "porquê", sua mentalidade e sua primeira grande escolha (US vs. UK).</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                        <h3 class="text-lg font-semibold mb-2">1. Encontre Seu "Porquê"</h3>
+                        <p>Seja pessoal. "Conseguir um emprego melhor" é vago. "Quero ser um programador e ler a documentação original" ou "Quero assistir filmes da Marvel sem legenda" são motivações inabaláveis.</p>
+                    </div>
+                    
+                    <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                        <h3 class="text-lg font-semibold mb-2">2. A Regra de Ouro: Constância > Intensidade</h3>
+                        <p>É mil vezes melhor estudar **30 minutos todos os dias** do que 4 horas em um único sábado. Seu cérebro precisa de tempo para processar os novos sons.</p>
+                    </div>
+                    
+                    <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                        <h3 class="text-lg font-semibold mb-2">3. Abrace o Erro (Seu Mestre)</h3>
+                        <p>Você vai errar os sons. `Ship` ou `sheep`? `Beach` ou `bitch`? Ótimo. Ria, corrija e siga. O medo de errar os sons é o que cria o sotaque intransponível.</p>
+                    </div>
+
+                    <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                        <h3 class="text-lg font-semibold mb-2">4. As 4 Habilidades</h3>
+                        <p class="font-bold">Input (Entrada):</p>
+                        <ul class="list-disc list-inside mb-2">
+                            <li>Ler (`Reading`)</li>
+                            <li>Ouvir (`Listening`)</li>
+                        </ul>
+                        <p class="font-bold">Output (Saída):</p>
+                        <ul class="list-disc list-inside">
+                            <li>Escrever (`Writing`)</li>
+                            <li>Falar (`Speaking`)</li>
+                        </ul>
+                        <p class="mt-2 italic">Regra de ouro: Input massivo primeiro. Você não pode pronunciar o que não *ouve* corretamente.</p>
+                    </div>
+                </div>
+
+                <div class="mt-6 bg-slate-100 p-4 rounded-lg border border-slate-200">
+                    <h3 class="text-lg font-semibold mb-2 text-center">Sua Primeira Escolha: Americano (US) vs. Britânico (UK)</h3>
+                    <p class="text-center mb-4">Você não pode aprender os dois ao mesmo tempo. A recomendação do poliglota é **começar pelo Americano (US)**, pois é a mídia dominante e a pronúncia é mais fácil para falantes de português.</p>
+                    <div class="flex flex-col md:flex-row gap-4">
+                        <div class="flex-1 p-3 bg-white rounded shadow border-2 border-blue-600">
+                            <h4 class="font-bold text-blue-700">Americano (US) - Recomendado</h4>
+                            <p class="text-sm">O "R" é pronunciado (`car`, `hard`).</p>
+                            <p class="text-sm">O "T" soa como nosso "R" (`water` ➔ "uó-rer").</p>
+                            <p class="text-sm italic">Mídia: Hollywood, Programação, Música Pop.</p>
+                        </div>
+                        <div class="flex-1 p-3 bg-white rounded shadow">
+                            <h4 class="font-bold">Britânico (UK)</h4>
+                            <p class="text-sm">O "R" no fim é mudo (`car` ➔ "cáá").</p>
+                            <p class="text-sm">O "T" é bem pronunciado (`water` ➔ "uó-tah").</p>
+                            <p class="text-sm italic">Mídia: BBC, Harry Potter, A Rainha.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ===== SEÇÃO 2: O ROTEIRO (FASES) ===== -->
+        <section id="section-roteiro" class="main-section hidden">
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-bold text-blue-700 mb-4">O Roteiro: Suas Fases de Aprendizado</h2>
+                <p class="mb-6 text-slate-700">Este é o coração do seu aprendizado. O roteiro é dividido em fases, do iniciante ao mestre. Clique em cada fase para ver seus objetivos, foco, gramática e o vocabulário que você precisa aprender. Acompanhe seu progresso visualmente com o gráfico de metas de vocabulário.</p>
+
+                <!-- Stepper de Fases -->
+                <div id="phase-stepper" class="flex flex-wrap justify-center gap-2 md:gap-4 mb-8">
+                    <button class="phase-step py-2 px-4 rounded-full border-2 border-slate-300 text-slate-600 font-semibold active" data-phase="1">Fase 1 (A1)</button>
+                    <button class="phase-step py-2 px-4 rounded-full border-2 border-slate-300 text-slate-600 font-semibold" data-phase="2">Fase 2 (A2)</button>
+                    <button class="phase-step py-2 px-4 rounded-full border-2 border-slate-300 text-slate-600 font-semibold" data-phase="3">Fase 3 (B1)</button>
+                    <button class="phase-step py-2 px-4 rounded-full border-2 border-slate-300 text-slate-600 font-semibold" data-phase="4">Fase 4 (B2)</button>
+                    <button class="phase-step py-2 px-4 rounded-full border-2 border-slate-300 text-slate-600 font-semibold" data-phase="5">Fase 5 (C1+)</button>
+                </div>
+
+                <!-- Gráfico de Vocabulário -->
+                <h3 class="text-xl font-semibold text-center mb-4">Metas de Vocabulário por Fase</h3>
+                <div class="chart-container mb-8">
+                    <canvas id="vocabChart"></canvas>
+                </div>
+
+                <!-- Container de Conteúdo das Fases -->
+                <div id="phase-content-container" class="bg-slate-50 p-6 rounded-lg border">
+                    
+                    <!-- Conteúdo Fase 1 -->
+                    <div id="phase-1-content" class="phase-content">
+                        <h3 class="text-xl font-bold mb-3">FASE 1: O FONETICISTA (A1 - "Hello, World")</h3>
+                        <p class="text-lg italic mb-4">Meses 0 a 4 | Meta: ~300 palavras</p>
+                        <p class="mb-4">**Objetivo:** Dominar os sons. Sobrevivência básica. Apresentar-se, fazer perguntas simples.</p>
+                        <p class="font-semibold">Foco Principal:</p>
+                        <p class="mb-4 text-red-700 font-bold">FONÉTICA. Ouvir e reproduzir os sons que não existem em português. Este é o seu "cheat code" para não ter um teto de fluência.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <h4 class="font-semibold">Vocabulário Essencial:</h4>
+                                <ul class="list-disc list-inside ml-4 text-sm">
+                                    <li>Saudações: `Hello`, `Hi`, `How are you?`</li>
+                                    <li>Cortesia: `Please`, `Thank you`, `Sorry`</li>
+                                    <li>Apresentação: `My name is...`, `I am from...`</li>
+                                    <li>Números (0-100), Cores, Dias da semana</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold">Gramática Mínima Viável:</h4>
+                                <ul class="list-disc list-inside ml-4 text-sm">
+                                    <li>Pronomes: `I`, `You`, `He`, `She`, `It`, `We`, `They`</li>
+                                    <li>Verbo `To Be`: `I am`, `You are`, `He is...`</li>
+                                    <li>Verbo `To Have`: `I have`, `He has...`</li>
+                                    <li>Artigos: `a`, `an`, `the`</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Conteúdo Fase 2 -->
+                    <div id="phase-2-content" class="phase-content hidden">
+                        <h3 class="text-xl font-bold mb-3">FASE 2: O CONSTRUTOR (A2 - "I can manage")</h3>
+                        <p class="text-lg italic mb-4">Meses 4 a 10 | Meta: ~1000 palavras</p>
+                        <p class="mb-4">**Objetivo:** Sair da "decoreba". Formar suas próprias frases, descrever seu dia, falar sobre o passado (simples).</p>
+                        <p class="font-semibold">Foco Principal:</p>
+                        <p class="mb-4">A Estrutura da Frase (SVO: Sujeito-Verbo-Objeto) e "Input Compreensível" (consumir conteúdo que você entende 70-80%).</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <h4 class="font-semibold">Vocabulário:</h4>
+                                <ul class="list-disc list-inside ml-4 text-sm">
+                                    <li>Rotina diária: `Wake up`, `Eat`, `Work`, `Sleep`</li>
+                                    <li>Hobbies: `I like to read`, `play soccer`</li>
+                                    <li>Verbos Irregulares (Top 100): `go-went`, `eat-ate`</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold">Gramática Essencial:</h4>
+                                <ul class="list-disc list-inside ml-4 text-sm">
+                                    <li>A 1ª Muralha: `DO` e `DOES` (para perguntas e negativas)</li>
+                                    <li>`Simple Present`: `I walk`, `He walks`</li>
+                                    <li>`Present Continuous`: `I am walking`</li>
+                                    <li>`Simple Past`: `I walked`, `I ate`</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Conteúdo Fase 3 -->
+                    <div id="phase-3-content" class="phase-content hidden">
+                        <h3 class="text-xl font-bold mb-3">FASE 3: O INTERMEDIÁRIO (B1 - "I can talk")</h3>
+                        <p class="text-lg italic mb-4">Meses 10 a 24 | Meta: ~2500 palavras</p>
+                        <p class="mb-4">**Objetivo:** Independência. Viajar sozinho, expressar opiniões, entender os pontos principais de conversas. Você começa a *pensar* em inglês.</p>
+                        <p class="font-semibold">Foco Principal:</p>
+                        <p class="mb-4">Conexão de Ideias, `Phrasal Verbs` (o terror!), e Output (falar!). Superar o "Platô B1" com volume massivo de input.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <h4 class="font-semibold">Vocabulário:</h4>
+                                <ul class="list-disc list-inside ml-4 text-sm">
+                                    <li>Conectores: `However`, `Although`, `Therefore`</li>
+                                    <li>Opinião: `I think...`, `I believe...`</li>
+                                    <li>Phrasal Verbs: `get up`, `go out`, `look for`</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold">Gramática Avançada (Início):</h4>
+                                <ul class="list-disc list-inside ml-4 text-sm">
+                                    <li>A 2ª Muralha: `PRESENT PERFECT` (`I have eaten...`)</li>
+                                    <li>`Modals`: `Can`, `Could`, `Should`, `Would`</li>
+                                    <li>Futuro: `Going to` vs. `Will`</li>
+                                    <li>Pronúncia: `Connected Speech` (`gonna`, `wanna`)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Conteúdo Fase 4 -->
+                    <div id="phase-4-content" class="phase-content hidden">
+                        <h3 class="text-xl font-bold mb-3">FASE 4: O INDEPENDENTE (B2 - "I can debate")</h3>
+                        <p class="text-lg italic mb-4">Anos 2 a 4 | Meta: ~5000+ palavras</p>
+                        <p class="mb-4">**Objetivo:** Fluência. Comunicar-se com naturalidade, entender discursos complexos (filmes, palestras), defender seu ponto de vista.</p>
+                        <p class="font-semibold">Foco Principal:</p>
+                        <p class="mb-4">Parar de "estudar" e começar a "viver" em inglês. Use o inglês para aprender sobre *outros* assuntos que você ama (história, culinária, etc.).</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <h4 class="font-semibold">Vocabulário:</h4>
+                                <ul class="list-disc list-inside ml-4 text-sm">
+                                    <li>`Idioms` (Gírias): `It's raining cats and dogs`</li>
+                                    <li>`Phrasal Verbs` (Avançado): `look up to`</li>
+                                    <li>Vocabulário da sua área (negócios, tecnologia)</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold">Gramática (Polimento):</h4>
+                                <ul class="list-disc list-inside ml-4 text-sm">
+                                    <li>A 3ª Muralha: `Conditionals` (0, 1, 2, 3)</li>
+                                    <li>`Past Perfect`: `I had already eaten...`</li>
+                                    <li>`Passive Voice`: `The book was written by...`</li>
+                                    <li>Pronúncia: `Intonação` (Ritmo da língua)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Conteúdo Fase 5 -->
+                    <div id="phase-5-content" class="phase-content hidden">
+                        <h3 class="text-xl font-bold mb-3">FASE 5: O MESTRE (C1/C2 - "I am")</h3>
+                        <p class="text-lg italic mb-4">Anos 4+</p>
+                        <p class="mb-4">**Objetivo:** Maestria. Entender tudo, incluindo piadas, subtextos culturais e linguagem acadêmica.</p>
+                        <p class="font-semibold">Foco Principal:</p>
+                        <p class="mb-4">Polimento fino. O idioma não é mais um desafio, é parte de você.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <h4 class="font-semibold">Polimento:</h4>
+                                <ul class="list-disc list-inside ml-4 text-sm">
+                                    <li>Redução de sotaque (foco em fonética fina)</li>
+                                    <li>Compreensão cultural profunda (história, política)</li>
+                                    <li>Diferenças dialetais (identificar sotaques)</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold">Recursos:</h4>
+                                <ul class="list-disc list-inside ml-4 text-sm">
+                                    <li>Aulas magnas (palestras universitárias)</li>
+                                    <li>Literatura Clássica (`Shakespeare`)</li>
+                                    <li>Dicionário da RAE (Oxford, Merriam-Webster)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SEÇÃO 3: DESAFIOS ===== -->
+        <section id="section-desafios" class="main-section hidden">
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-bold text-blue-700 mb-4">As Grandes Muralhas (Desafios)</h2>
+                <p class="mb-6 text-slate-700">Todo aprendiz de inglês encontra alguns obstáculos principais. Esta seção isola os mais difíceis para você focar e vencê-los. Em vez de estarem perdidos no texto, aqui estão eles, prontos para sua revisão.</p>
+
+                <!-- Muralha 1: Fonética -->
+                <div class="mb-6 bg-slate-50 p-4 rounded-lg border">
+                    <h3 class="text-xl font-bold mb-3">Muralha 1: Fonética (O Dragão)</h3>
+                    <p class="mb-4">A maior dificuldade. Sons que não temos em português.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-white p-3 rounded shadow">
+                            <h4 class="font-semibold">`TH` Não-vozeado (`think`, `thanks`)</h4>
+                            <p class="text-sm">Som de "S" com a língua entre os dentes.</p>
+                        </div>
+                        <div class="bg-white p-3 rounded shadow">
+                            <h4 class="font-semibold">`TH` Vozeado (`this`, `they`)</h4>
+                            <p class="text-sm">Som de "Z" com a língua entre os dentes.</p>
+                        </div>
+                        <div class="bg-white p-3 rounded shadow">
+                            <h4 class="font-semibold">`i` curto (ɪ) vs. `i` longo (i:)</h4>
+                            <p class="text-sm">`Ship` (navio, som "ê/i") vs. `Sheep` (ovelha, som "i").</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Muralha 2: Do / Does -->
+                <div class="mb-6 bg-slate-50 p-4 rounded-lg border">
+                    <h3 class="text-xl font-bold mb-3">Muralha 2: `DO` e `DOES` (Auxiliares)</h3>
+                    <p class="mb-4">Em português, mudamos a entonação. Em inglês, você *precisa* de um auxiliar para perguntar e negar no presente.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-white p-3 rounded shadow">
+                            <h4 class="font-semibold">Afirmativa</h4>
+                            <p class="text-sm">`You like chocolate.`<br>`He likes chocolate.`</p>
+                        </div>
+                        <div class="bg-white p-3 rounded shadow">
+                            <h4 class="font-semibold">Interrogativa (Pergunta)</h4>
+                            <p class="text-sm">`DO you like chocolate?`<br>`DOES he like chocolate?`</p>
+                        </div>
+                        <div class="bg-white p-3 rounded shadow">
+                            <h4 class="font-semibold">Negativa</h4>
+                            <p class="text-sm">`You DO NOT (don't) like...`<br>`He DOES NOT (doesn't) like...`</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Muralha 3: Present Perfect -->
+                <div class="mb-6 bg-slate-50 p-4 rounded-lg border">
+                    <h3 class="text-xl font-bold mb-3">Muralha 3: `Present Perfect`</h3>
+                    <p class="mb-4">O tempo verbal que não temos. Ele conecta o passado com o presente.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-white p-3 rounded shadow">
+                            <h4 class="font-semibold">`Simple Past` (Passado Simples)</h4>
+                            <p class="text-sm">Ação acabada, com tempo definido.</p>
+                            <p class="text-sm font-mono">`I ate an apple yesterday.` (Ação pontual, ontem.)</p>
+                        </div>
+                        <div class="bg-white p-3 rounded shadow">
+                            <h4 class="font-semibold">`Present Perfect` (Presente Perfeito)</h4>
+                            <p class="text-sm">Ação no passado, mas o resultado importa *agora* ou o tempo é indefinido.</p>
+                            <p class="text-sm font-mono">`I have eaten an apple.` (Eu já comi, a experiência importa.)</p>
+                            <p class="text-sm font-mono">`I have lived here for 10 years.` (Comecei há 10 anos e *ainda vivo*.)</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ===== SEÇÃO 4: BIBLIOTECA DE RECURSOS ===== -->
+        <section id="section-recursos" class="main-section hidden">
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-bold text-blue-700 mb-4">Biblioteca de Recursos Gratuitos</h2>
+                <p class="mb-6 text-slate-700">Aqui está seu arsenal. São aplicativos, canais, podcasts e sites para todas as fases do seu aprendizado. Use os filtros para encontrar exatamente o que você precisa para seu estudo de hoje.</p>
+
+                <!-- Filtros de Recursos -->
+                <div id="resource-filters" class="flex flex-wrap justify-center gap-2 mb-8">
+                    <button class="filter-btn py-2 px-4 rounded-full border-2 border-slate-300 text-slate-600 font-semibold active" data-filter="all">Todos</button>
+                    <button class="filter-btn py-2 px-4 rounded-full border-2 border-slate-300 text-slate-600 font-semibold" data-filter="app">Aplicativos</button>
+                    <button class="filter-btn py-2 px-4 rounded-full border-2 border-slate-300 text-slate-600 font-semibold" data-filter="youtube">YouTube</button>
+                    <button class="filter-btn py-2 px-4 rounded-full border-2 border-slate-300 text-slate-600 font-semibold" data-filter="podcast">Podcasts</button>
+                    <button class="filter-btn py-2 px-4 rounded-full border-2 border-slate-300 text-slate-600 font-semibold" data-filter="leitura">Leitura & Dicionários</button>
+                    <button class="filter-btn py-2 px-4 rounded-full border-2 border-slate-300 text-slate-600 font-semibold" data-filter="fala">Prática de Fala</button>
+                </div>
+
+                <!-- Grade de Recursos -->
+                <div id="resource-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    
+                    <!-- FASE 1 -->
+                    <div class="resource-card bg-slate-50 p-4 rounded-lg shadow border" data-type="app">
+                        <span class="text-xs font-bold text-blue-600">FASE 1+ | APP</span>
+                        <h4 class="text-lg font-semibold">Duolingo</h4>
+                        <p class="text-sm mb-2">Bom para criar o hábito diário.</p>
+                    </div>
+                    <div class="resource-card bg-slate-50 p-4 rounded-lg shadow border" data-type="app">
+                        <span class="text-xs font-bold text-blue-600">FASE 1+ | APP</span>
+                        <h4 class="text-lg font-semibold">Memrise</h4>
+                        <p class="text-sm mb-2">Bom para vocabulário com vídeos de nativos.</p>
+                    </div>
+                    <div class="resource-card bg-slate-50 p-4 rounded-lg shadow border" data-type="youtube">
+                        <span class="text-xs font-bold text-blue-600">FASE 1 | YOUTUBE</span>
+                        <h4 class="text-lg font-semibold">Rachel's English (US)</h4>
+                        <p class="text-sm mb-2">**Obrigatório.** A rainha da pronúncia americana. Comece aqui.</p>
+                        <a href="https://www.youtube.com/@RachelsEnglish" target="_blank" class="text-sm text-blue-600 hover:underline">Visitar Canal</a>
+                    </div>
+                    <div class="resource-card bg-slate-50 p-4 rounded-lg shadow border" data-type="youtube">
+                        <span class="text-xs font-bold text-blue-600">FASE 1 | YOUTUBE</span>
+                        <h4 class="text-lg font-semibold">English with Lucy (UK)</h4>
+                        <p class="text-sm mb-2">Excelente para a pronúncia britânica (se você escolheu UK).</p>
+                        <a href="https://www.youtube.com/@EnglishwithLucy" target="_blank" class="text-sm text-blue-600 hover:underline">Visitar Canal</a>
+                    </div>
+                    <div class="resource-card bg-slate-50 p-4 rounded-lg shadow border" data-type="youtube">
+                        <span class="text-xs font-bold text-blue-600">FASE 1-2 | YOUTUBE</span>
+                        <h4 class="text-lg font-semibold">SmallAdvantages (Gavin)</h4>
+                        <p class="text-sm mb-2">Americano que fala português e entende nossos erros. Ouro puro.</p>
+                        <a href="https://www.youtube.com/@SmallAdvantages" target="_blank" class="text-sm text-blue-600 hover:underline">Visitar Canal</a>
+                    </div>
+                    <div class="resource-card bg-slate-50 p-4 rounded-lg shadow border" data-type="podcast">
+                        <span class="text-xs font-bold text-blue-600">FASE 1-2 | PODCAST</span>
+                        <h4 class="text-lg font-semibold">ESL Podcast</h4>
+                        <p class="text-sm mb-2">Diálogos lentos, explicados. Perfeito para A1/A2.</p>
+                        <a href="https://open.spotify.com/show/0wS0E7g36nCVyO3t1gYJ2w" target="_blank" class="text-sm text-blue-600 hover:underline">Ouvir no Spotify</a>
+                    </div>
+
+                    <!-- FASE 2 -->
+                    <div class="resource-card bg-slate-50 p-4 rounded-lg shadow border" data-type="app">
+                        <span class="text-xs font-bold text-blue-600">FASE 2+ | FERRAMENTA</span>
+                        <h4 class="text-lg font-semibold">Anki (SRS)</h4>
+                        <p class="text-sm mb-2">**Não negociável.** Software de flashcards com repetição espaçada para memorizar vocabulário.</p>
+                        <a href="https://apps.ankiweb.net/" target="_blank" class="text-sm text-blue-600 hover:underline">Baixar App</a>
+                    </div>
+                    <div class="resource-card bg-slate-50 p-4 rounded-lg shadow border" data-type="youtube">
+                        <span class="text-xs font-bold text-blue-600">FASE 2-3 | YOUTUBE</span>
+                        <h4 class="text-lg font-semibold">VOA Learning English</h4>
+                        <p class="text-sm mb-2">Notícias lidas de forma lenta e clara, com vocabulário limitado. Perfeito.</p>
+                        <a href="https://www.youtube.com/@VOALearningEnglish" target="_blank" class="text-sm text-blue-600 hover:underline">Visitar Canal</a>
+                    </div>
+                    <div class="resource-card bg-slate-50 p-4 rounded-lg shadow border" data-type="leitura">
+                        <span class="text-xs font-bold text-blue-600">FASE 2+ | DICIONÁRIO</span>
+                        <h4 class="text-lg font-semibold">YouGlish</h4>
+                        <p class="text-sm mb-2">Digite uma palavra e ele te mostra vídeos do YouTube onde ela é dita. Perfeito para pronúncia.</p>
+                    </div>
+                    <div class="resource-card bg-slate-50 p-4 rounded-lg shadow border" data-type="youtube">
+                        <span class="text-xs font-bold text-blue-600">FASE 2-3 | YOUTUBE</span>
+                        <h4 class="text-lg font-semibold">BBC Learning English</h4>
+                        <p class="text-sm mb-2">Aulas curtas e estruturadas. Foco em UK, mas a gramática é universal.</p>
+                        <a href="https://www.youtube.com/@bbclearningenglish" target="_blank" class="text-sm text-blue-600 hover:underline">Visitar Canal</a>
+                    </div>
+
+                    <!-- FASE 3 -->
+                    <div class="resource-card bg-slate-50 p-4 rounded-lg shadow border" data-type="fala">
+                        <span class="text-xs font-bold text-blue-600">FASE 3+ | FALA</span>
+                        <h4 class="text-lg font-semibold">HelloTalk / Tandem</h4>
+                        <p class="text-sm mb-2">Apps gratuitos para conectar você com nativos que querem aprender português. **Obrigatório.**</p>
+                    </div>
+                    <div class="resource-card bg-slate-50 p-4 rounded-lg shadow border" data-type="podcast">
+                        <span class="text-xs font-bold text-blue-600">FASE 3-4 | PODCAST</span>
+                        <h4 class="text-lg font-semibold">All Ears English (US)</h4>
+                        <p class="text-sm mb-2">Focado em B1/B2. Rápido, mas claro, e focado em cultura americana e idioms.</p>
+                        <a href="https://open.spotify.com/show/3i5phI12r3fH8mDe5vGj1X" target="_blank" class="text-sm text-blue-600 hover:underline">Ouvir no Spotify</a>
+                    </div>
+                     <div class="resource-card bg-slate-50 p-4 rounded-lg shadow border" data-type="podcast">
+                        <span class="text-xs font-bold text-blue-600">FASE 3-4 | PODCAST</span>
+                        <h4 class="text-lg font-semibold">Luke's English Podcast (UK)</h4>
+                        <p class="text-sm mb-2">Excelente para B1+. O professor Luke é engraçado e fala sobre tudo.</p>
+                        <a href="https://open.spotify.com/show/2AUPC0sVn4WvGg2jG3k6jL" target="_blank" class="text-sm text-blue-600 hover:underline">Ouvir no Spotify</a>
+                    </div>
+                    <div class="resource-card bg-slate-50 p-4 rounded-lg shadow border" data-type="leitura">
+                        <span class="text-xs font-bold text-blue-600">FASE 3 | LEITURA</span>
+                        <h4 class="text-lg font-semibold">Simple English Wikipedia</h4>
+                        <p class="text-sm mb-2">Artigos da Wikipedia escritos com gramática e vocabulário simples.</p>
+                    </div>
+                    <div class="resource-card bg-slate-50 p-4 rounded-lg shadow border" data-type="app">
+                        <span class="text-xs font-bold text-blue-600">FASE 3+ | IMERSÃO</span>
+                        <h4 class="text-lg font-semibold">Netflix / YouTube</h4>
+                        <p class="text-sm mb-2">Use a "Técnica Netflix": **ÁUDIO em inglês** e **LEGENDAS em inglês**. Não use legendas em português!</p>
+                    </div>
+
+                    <!-- FASE 4 -->
+                    <div class="resource-card bg-slate-50 p-4 rounded-lg shadow border" data-type="leitura">
+                        <span class="text-xs font-bold text-blue-600">FASE 4+ | LEITURA</span>
+                        <h4 class="text-lg font-semibold">TED Talks</h4>
+                        <p class="text-sm mb-2">Palestras curtas, complexas, com transcrições. Ouro puro.</p>
+                        <a href="https://www.ted.com/" target="_blank" class="text-sm text-blue-600 hover:underline">Visitar Site</a>
+                    </div>
+                    <div class="resource-card bg-slate-50 p-4 rounded-lg shadow border" data-type="podcast">
+                        <span class="text-xs font-bold text-blue-600">FASE 4+ | PODCAST</span>
+                        <h4 class="text-lg font-semibold">NPR / BBC World</h4>
+                        <p class="text-sm mb-2">Jornalismo de alta qualidade para imersão total.</p>
+                    </div>
+                    <div class="resource-card bg-slate-50 p-4 rounded-lg shadow border" data-type="leitura">
+                        <span class="text-xs font-bold text-blue-600">FASE 4+ | LEITURA</span>
+                        <h4 class="text-lg font-semibold">Project Gutenberg</h4>
+                        <p class="text-sm mb-2">Milhares de livros clássicos de domínio público gratuitos.</p>
+                        <a href="https://www.gutenberg.org/" target="_blank" class="text-sm text-blue-600 hover:underline">Visitar Site</a>
+                    </div>
+                    <div class="resource-card bg-slate-50 p-4 rounded-lg shadow border" data-type="fala">
+                        <span class="text-xs font-bold text-blue-600">FASE 4+ | FALA</span>
+                        <h4 class="text-lg font-semibold">Discord</h4>
+                        <p class="text-sm mb-2">Entre em servidores em inglês sobre seus hobbies (games, arte, etc.) e converse por voz.</p>
+                    </div>
+
+                    <!-- FASE 5 -->
+                     <div class="resource-card bg-slate-50 p-4 rounded-lg shadow border" data-type="leitura">
+                        <span class="text-xs font-bold text-blue-600">FASE 5 | LEITURA</span>
+                        <h4 class="text-lg font-semibold">OED / Merriam-Webster</h4>
+                        <p class="text-sm mb-2">Dicionários avançados para polimento fino.</p>
+                    </div>
+                    <div class="resource-card bg-slate-50 p-4 rounded-lg shadow border" data-type="youtube">
+                        <span class="text-xs font-bold text-blue-600">FASE 5 | YOUTUBE</span>
+                        <h4 class="text-lg font-semibold">Aulas Magnas (MIT, Harvard)</h4>
+                        <p class="text-sm mb-2">Assista a palestras universitárias completas no YouTube.</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SEÇÃO 5: SEU PLANO ===== -->
+        <section id="section-plano" class="main-section hidden">
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-bold text-blue-700 mb-4">Seu Plano de Ação</h2>
+                <p class="mb-6 text-slate-700">Conhecimento sem ação não leva à fluência. Esta seção é seu "Plano de Jogo Diário" e um guia sobre como provar suas habilidades com certificações oficiais (quando você estiver pronto).</p>
+
+                <!-- Plano de Jogo Diário -->
+                <div class="bg-blue-50 p-6 rounded-lg border border-blue-200 mb-8">
+                    <h3 class="text-xl font-bold mb-4 text-center">Resumo do Plano de Jogo Diário (45-60 minutos)</h3>
+                    <ul class="divide-y divide-blue-300">
+                        <li class="py-3">
+                            <h4 class="font-semibold">10 min: Aquecimento (Anki)</h4>
+                            <p class="text-sm">Revise seu vocabulário e verbos irregulares. (Obrigatório!)</p>
+                        </li>
+                        <li class="py-3">
+                            <h4 class="font-semibold">10 min: Fonética (O Dragão)</h4>
+                            <p class="text-sm">Veja 1-2 vídeos da *Rachel's English*. Pratique os sons no espelho.</p>
+                        </li>
+                        <li class="py-3">
+                            <h4 class="font-semibold">20 min: Input Massivo (Ouvir/Ler)</h4>
+                            <p class="text-sm">Assista a um vídeo (VOA), ouça um podcast (ESL), ou leia um texto.</p>
+                        </li>
+                        <li class="py-3">
+                            <h4 class="font-semibold">10 min: Gramática/Estudo Ativo</h4>
+                            <p class="text-sm">Veja um vídeo (BBC) sobre *um* tópico (ex: Present Perfect).</p>
+                        </li>
+                        <li class="py-3">
+                            <h4 class="font-semibold">(Quando B1+) 10 min: Output (Falar/Escrever)</h4>
+                            <p class="text-sm">Troque mensagens no HelloTalk ou escreva seu diário em inglês.</p>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Certificações -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4 text-center">Seção Especial: Certificações (A Prova)</h3>
+                    <p class="text-center mb-4">Elas **não são gratuitas** para fazer o exame, mas são úteis para universidades ou empregos. Não se preocupe com isso até chegar ao nível B2.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-slate-100 p-4 rounded-lg border">
+                            <h4 class="text-lg font-semibold">1. TOEFL (US)</h4>
+                            <p class="text-sm mb-2">Foco: Americano, acadêmico. Exigido por universidades dos EUA. Expira em 2 anos.</p>
+                        </div>
+                        <div class="bg-slate-100 p-4 rounded-lg border">
+                            <h4 class="text-lg font-semibold">2. IELTS (UK/Global)</h4>
+                            <p class="text-sm mb-2">Foco: Britânico/Internacional. Exigido por universidades do UK, Canadá, Austrália. Expira em 2 anos.</p>
+                        </div>
+                        <div class="bg-slate-100 p-4 rounded-lg border">
+                            <h4 class="text-lg font-semibold">3. Cambridge (UK/Global)</h4>
+                            <p class="text-sm mb-2">Foco: Britânico. **Vantagem: NÃO EXPIRA.** São para a vida (FCE, CAE, CPE).</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <footer class="text-center py-6 mt-8 border-t border-slate-200">
+        <p class="text-sm text-slate-500">Baseado no "Roteiro Mestre de Inglês: Um Legado de 40 Anos".</p>
+        <p class="text-sm text-slate-500">Agora, pare de ler e vá praticar seu `TH`.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // === LÓGICA DE NAVEGAÇÃO PRINCIPAL ===
+            const navButtons = document.querySelectorAll('.nav-btn');
+            const mainSections = document.querySelectorAll('.main-section');
+
+            document.getElementById('main-nav').addEventListener('click', (e) => {
+                if (e.target.classList.contains('nav-btn')) {
+                    const targetId = e.target.dataset.target;
+
+                    navButtons.forEach(btn => btn.classList.remove('active'));
+                    e.target.classList.add('active');
+
+                    mainSections.forEach(section => {
+                        if (section.id === targetId) {
+                            section.classList.remove('hidden');
+                        } else {
+                            section.classList.add('hidden');
+                        }
+                    });
+                }
+            });
+
+            // === LÓGICA DO ROTEIRO (FASES) ===
+            const phaseStepper = document.getElementById('phase-stepper');
+            const phaseContents = document.querySelectorAll('.phase-content');
+            
+            phaseStepper.addEventListener('click', (e) => {
+                if (e.target.classList.contains('phase-step')) {
+                    const targetPhase = e.target.dataset.phase;
+                    const targetContentId = `phase-${targetPhase}-content`;
+
+                    phaseStepper.querySelectorAll('.phase-step').forEach(btn => btn.classList.remove('active'));
+                    e.target.classList.add('active');
+
+                    phaseContents.forEach(content => {
+                        if (content.id === targetContentId) {
+                            content.classList.remove('hidden');
+                        } else {
+                            content.classList.add('hidden');
+                        }
+                    });
+                }
+            });
+
+            // === LÓGICA DA BIBLIOTECA DE RECURSOS (FILTROS) ===
+            const filterContainer = document.getElementById('resource-filters');
+            const resourceCards = document.querySelectorAll('.resource-card');
+
+            filterContainer.addEventListener('click', (e) => {
+                if (e.target.classList.contains('filter-btn')) {
+                    const filterType = e.target.dataset.filter;
+
+                    filterContainer.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+                    e.target.classList.add('active');
+
+                    resourceCards.forEach(card => {
+                        const cardType = card.dataset.type;
+                        if (filterType === 'all' || cardType === filterType) {
+                            card.classList.remove('hidden');
+                        } else {
+                            card.classList.add('hidden');
+                        }
+                    });
+                }
+            });
+
+            // === LÓGICA DO GRÁFICO (Chart.js) ===
+            const ctx = document.getElementById('vocabChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Fase 1 (A1)', 'Fase 2 (A2)', 'Fase 3 (B1)', 'Fase 4 (B2)'],
+                    datasets: [{
+                        label: 'Meta de Palavras Acumuladas',
+                        data: [300, 1000, 2500, 5000],
+                        backgroundColor: [
+                            'rgba(59, 130, 246, 0.6)',
+                            'rgba(37, 99, 235, 0.6)',
+                            'rgba(29, 78, 216, 0.6)',
+                            'rgba(30, 64, 175, 0.6)'
+                        ],
+                        borderColor: [
+                            'rgba(59, 130, 246, 1)',
+                            'rgba(37, 99, 235, 1)',
+                            'rgba(29, 78, 216, 1)',
+                            'rgba(30, 64, 175, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Número de Palavras'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return ` ${context.dataset.label}: ${context.formattedValue} palavras`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+        });
+    </script>
+</body>
+</html>
